@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Spree::BackendConfiguration::MenuItem do
   describe '#match_path' do
     subject do
-      described_class.new([], nil, match_path: '/stock_items').match_path
+      described_class.new(match_path: '/stock_items').match_path
     end
 
     it 'can be read' do
@@ -14,16 +14,18 @@ RSpec.describe Spree::BackendConfiguration::MenuItem do
   end
 
   describe "#url" do
-    subject { described_class.new([], nil, url: url).url }
+    subject { described_class.new(url: url).url }
 
     context "if url is a string" do
       let(:url) { "/admin/promotions" }
       it { is_expected.to eq("/admin/promotions") }
     end
 
-    context "if url is a symbol" do
+    context "when url is a symbol" do
       let(:url) { :admin_promotions_path }
-      it { is_expected.to eq(:admin_promotions_path) }
+      it "treats it as a route name" do
+        is_expected.to eq("/admin/promotions")
+      end
     end
 
     context "if url is a lambda" do
