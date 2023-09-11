@@ -1,14 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
+import NiceSelect from "nice-select2"
 
 export default class extends Controller {
-  static targets = ['output']
 
-  typed(event) {
-    this.text = event.currentTarget.value
-    this.render()
-  }
-
-  render() {
-    this.outputTarget.innerText = this.text
-  }
 }

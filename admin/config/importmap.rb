@@ -5,7 +5,9 @@ pin "@hotwired/stimulus", to: "stimulus.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin "@hotwired/turbo-rails", to: "turbo.js"
 
+# Other libraries
 pin "stimulus-use", to: "https://ga.jspm.io/npm:stimulus-use@0.52.0/dist/index.js"
+pin "choices", to: "https://ga.jspm.io/npm:choices@0.1.3/choices.js"
 
 pin "solidus_admin/application", preload: true
 pin "solidus_admin/utils"

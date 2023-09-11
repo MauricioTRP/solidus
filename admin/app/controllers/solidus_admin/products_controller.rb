@@ -17,7 +17,7 @@ module SolidusAdmin
     def update
       @product = Spree::Product.friendly.find(params[:id])
 
-      if @product.update(product_params)
+      if @product.update(params.require(:product).permit!)
         flash[:success] = t('spree.successfully_updated', resource: [
           Spree::Product.model_name.human,
           @product.name.inspect,

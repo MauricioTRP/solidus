@@ -37,7 +37,7 @@ class SolidusAdmin::UI::Forms::Select::Component < SolidusAdmin::BaseComponent
     hint: nil,
     errors: nil,
     options: {},
-    attributes: {}
+    **attributes
   )
     @field = field
     @builder = builder
@@ -71,7 +71,7 @@ class SolidusAdmin::UI::Forms::Select::Component < SolidusAdmin::BaseComponent
       "data-#{stimulus_id}-prompt-class" => "text-gray-400",
       "data-#{stimulus_id}-arrow-prompt-class" => "!fill-gray-500"
     ) do
-      field_tag(guidance) + arrow_tag(guidance)
+      field_tag(guidance) + (arrow_tag(guidance) unless @attributes[:multiple])
     end
   end
 
@@ -131,8 +131,9 @@ class SolidusAdmin::UI::Forms::Select::Component < SolidusAdmin::BaseComponent
   def arrow_tag(guidance)
     icon_tag(
       "arrow-down-s-fill",
-      class: SIZES.fetch(@size)[:arrow] + [arrow_color_class(guidance)] +
-               %w[absolute right-3 top-1/2 translate-y-[-50%] pointer-events-none],
+      class: SIZES.fetch(@size)[:arrow] + [
+        arrow_color_class(guidance)
+      ] + %w[absolute right-3 top-1/2 translate-y-[-50%] pointer-events-none],
       "data-#{stimulus_id}-target" => "arrow"
     )
   end

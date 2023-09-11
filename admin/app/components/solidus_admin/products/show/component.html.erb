@@ -90,10 +90,20 @@
         <%= render component('ui/panel').new(title: "Product organization") do %>
           <%= render component('ui/forms/text_field').new(field: :available_on, builder: f, type: :date) %>
 
-          <%= render component('ui/forms/select').new(
-            field: :tax_category_id,
-            choices: [[t('.none'), nil]] + Spree::TaxCategory.order(:name).pluck(:name, :id),
+          <% taxon_options = Spree::Taxon.order(:name).pluck(:name, :id)%>
+          <%= render component('ui/forms/label').new(
+            field: :taxon_ids,
             builder: f,
+          ) %>
+          <%= f.select(
+            :taxon_ids,
+            taxon_options,
+            { include_hidden: false },
+            {
+              multiple: true,
+              size: taxon_options.size,
+              class: 'w-full',
+            },
           ) %>
         <% end %>
       </aside>

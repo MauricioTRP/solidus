@@ -1,4 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
+import Choices from "choices"
+console.log(Choices)
 
 export default class extends Controller {
   static targets = ['select', 'arrow']
@@ -7,6 +9,9 @@ export default class extends Controller {
   connect () {
     this.addClassToOptions()
     this.refreshSelectClass()
+    if (this.selectTarget.multiple) {
+      new NiceSelect(this.selectTarget, { searchable: true })
+    }
   }
 
   // Add class to all the options to avoid inheriting the select's styles
