@@ -1,0 +1,120 @@
+<div class="<%= stimulus_id %> px-4 relative" data-controller="<%= stimulus_id %>">
+  <header class="py-6 flex items-center gap-4">
+    <%= render component('ui/button').new(
+      tag: :a,
+      alt: t('.back'),
+      icon: 'arrow-left-line',
+      scheme: :secondary,
+      href: solidus_admin.products_path,
+    ) %>
+    <h1 class="flex items-center gap-2">
+      <span class="body-title"><%= @product.name %></span>
+      <%= render component('products/status').new(product: @product) %>
+    </h1>
+
+    <div class="ml-auto flex gap-2 items-center">
+      <%= render component('feedback').new %>
+      <%= render component('ui/button').new(
+        tag: :a,
+        text: t('.duplicate'),
+        href: spree.clone_admin_product_path(@product),
+        scheme: :ghost,
+      ) %>
+      <%= render component('ui/button').new(
+        tag: :a,
+        text: t('.view'),
+        href: SolidusAdmin::Config.storefront_product_path(@product),
+        target: :_blank,
+        scheme: :ghost,
+      ) %>
+      <%= render component('ui/button').new(
+        tag: :button,
+        text: t('.save'),
+        form: form_id,
+      ) %>
+    </div>
+  </header>
+
+  <%= form_for @product, url: product_path(@product), html: { id: form_id } do |f| %>
+    <div class="flex gap-4 items-start pb-4">
+      <div class="justify-center items-start gap-4 flex flex-col w-full">
+        <%= render component('ui/panel').new do %>
+          <%= render component('ui/forms/text_field').new(field: :name, builder: f) %>
+          <%= render component('ui/forms/text_field').new(field: :slug, builder: f) %>
+          <%= render component('ui/forms/text_area').new(field: :description, builder: f) %>
+        <% end %>
+
+        <%= render component('ui/panel').new(title: 'SEO', title_hint: 'Search Engine Optimization') do %>
+          <%= render component('ui/forms/text_field').new(field: :meta_title, builder: f) %>
+          <%= render component('ui/forms/text_field').new(field: :meta_description, builder: f) %>
+          <%= render component('ui/forms/text_area').new(field: :meta_keywords, builder: f) %>
+        <% end %>
+
+        <%= render component('ui/panel').new(title: 'Pricing') do %>
+          <%= render component('ui/forms/text_field').new(field: :price, builder: f) %>
+          <div class="flex gap-4 items-grow">
+            <%= render component('ui/forms/text_field').new(field: :cost_price, builder: f) %>
+            <%= render component('ui/forms/text_field').new(field: :cost_currency, builder: f) %>
+          </div>
+        <% end %>
+
+        <%= render component('ui/panel').new(title: 'Shipping') do %>
+          <%= render component('ui/forms/select').new(
+            field: :shipping_category_id,
+            choices: [[t('.none'), nil]] + Spree::ShippingCategory.order(:name).pluck(:name, :id),
+            builder: f,
+          ) %>
+          <%= render component('ui/forms/select').new(
+            field: :tax_category_id,
+            choices: [[t('.none'), nil]] + Spree::TaxCategory.order(:name).pluck(:name, :id),
+            builder: f,
+          ) %>
+        <% end %>
+      </div>
+
+      <aside class="justify-center items-start gap-4 flex flex-col w-full max-w-sm">
+        <%= render component('ui/panel').new(title: "Publishing") do %>
+          <%= render component('ui/forms/text_field').new(field: :available_on, builder: f, type: :date) %>
+          <%= render component('ui/forms/text_field').new(field: :discontinue_on, builder: f, type: :date) %>
+
+          <label class="flex gap-2 items-center">
+            <%= render component('ui/forms/checkbox').new(
+              name: "#{f.object_name}[promotionable]",
+              checked: f.object.promotionable,
+            ) %>
+            <span class="body-text-sm"><%= Spree::Product.human_attribute_name :promotionable %></span>
+            <%= render component('ui/toggletip').new(text: t('.hints.promotionable_html'), position: :left) %>
+          </label>
+        <% end %>
+
+        <%= render component('ui/panel').new(title: "Product organization") do %>
+          <%= render component('ui/forms/text_field').new(field: :available_on, builder: f, type: :date) %>
+
+          <%= render component('ui/forms/select').new(
+            field: :tax_category_id,
+            choices: [[t('.none'), nil]] + Spree::TaxCategory.order(:name).pluck(:name, :id),
+            builder: f,
+          ) %>
+        <% end %>
+      </aside>
+    </div>
+  <% end %>
+
+  <div class="mt-4 py-4 px-2 pb-8 border-t border-gray-100 flex">
+    <div class="flex gap-2 grow">
+      <%= form_for @product, method: :delete do %>
+        <%= render component('ui/button').new(
+          tag: :button,
+          text: t('.delete'),
+          scheme: :secondary,
+          class: 'border-red-500 text-red-500 hover:bg-red-500 hover:text-white',
+        ) %>
+      <% end %>
+    </div>
+    <%= render component('ui/button').new(
+      tag: :button,
+      text: t('.save'),
+      form: form_id,
+    ) %>
+  </div>
+</div>

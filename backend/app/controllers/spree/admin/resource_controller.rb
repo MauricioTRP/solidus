@@ -38,7 +38,7 @@ class Spree::Admin::ResourceController < Spree::Admin::BaseController
       respond_with(@object) do |format|
         format.html do
           flash[:success] = flash_message_for(@object, :successfully_updated)
-          redirect_to location_after_save
+          redirect_to location_after_save, status: :see_other
         end
         format.js { render layout: false }
       end
@@ -61,7 +61,7 @@ class Spree::Admin::ResourceController < Spree::Admin::BaseController
       invoke_callbacks(:create, :after)
       flash[:success] = flash_message_for(@object, :successfully_created)
       respond_with(@object) do |format|
-        format.html { redirect_to location_after_save }
+        format.html { redirect_to location_after_save, status: :see_other }
         format.js   { render layout: false }
       end
     else
@@ -111,7 +111,7 @@ class Spree::Admin::ResourceController < Spree::Admin::BaseController
       invoke_callbacks(:destroy, :after)
       flash[:success] = flash_message_for(@object, :successfully_removed)
       respond_with(@object) do |format|
-        format.html { redirect_to location_after_destroy }
+        format.html { redirect_to location_after_destroy, status: :see_other }
         format.js   { render partial: "spree/admin/shared/destroy" }
       end
     else
@@ -120,7 +120,7 @@ class Spree::Admin::ResourceController < Spree::Admin::BaseController
         message = @object.errors.full_messages.to_sentence
         format.html do
           flash[:error] = message
-          redirect_to location_after_destroy
+          redirect_to location_after_destroy, status: :see_other
         end
         format.js do
           render status: :unprocessable_entity, plain: message

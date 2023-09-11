@@ -84,7 +84,7 @@ class SolidusAdmin::UI::Forms::Select::Component < SolidusAdmin::BaseComponent
       **field_aria_describedby_attribute(guidance),
       **field_error_attributes(guidance),
       **@attributes.except(:class).merge(
-        "data-target" => "#{stimulus_id}.select",
+        "data-#{stimulus_id}-target" => "select",
         "data-action" => "#{stimulus_id}#refreshSelectClass"
       )
     )
@@ -133,7 +133,7 @@ class SolidusAdmin::UI::Forms::Select::Component < SolidusAdmin::BaseComponent
       "arrow-down-s-fill",
       class: SIZES.fetch(@size)[:arrow] + [arrow_color_class(guidance)] +
                %w[absolute right-3 top-1/2 translate-y-[-50%] pointer-events-none],
-      "data-target" => "#{stimulus_id}.arrow"
+      "data-#{stimulus_id}-target" => "arrow"
     )
   end
 
